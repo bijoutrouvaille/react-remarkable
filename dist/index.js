@@ -1,70 +1,83 @@
 'use strict';
 
-import React from 'react';
-import Markdown from 'remarkable';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var iterable = function (o) {
-  return typeof o == 'object' && o != null;
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _remarkable = require('remarkable');
+
+var _remarkable2 = _interopRequireDefault(_remarkable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var iterable = function iterable(o) {
+  return (typeof o === 'undefined' ? 'undefined' : _typeof(o)) == 'object' && o != null;
 };
-var deepEqual = function (a, b) {
+var deepEqual = function deepEqual(a, b) {
   if (!iterable(a) || !iterable(b)) return a === b;
-  for (var key in a) if (a.hasOwnProperty(key)) if (!deepEqual(a[k], b[k])) return false;
-  return true;
+  for (var key in a) {
+    if (a.hasOwnProperty(key)) if (!deepEqual(a[k], b[k])) return false;
+  }return true;
 };
 
-var Remarkable = React.createClass({
+var Remarkable = _react2.default.createClass({
   displayName: 'Remarkable',
-
-
-  getDefaultProps() {
+  getDefaultProps: function getDefaultProps() {
     return {
       container: 'div',
       options: {}
     };
   },
-
-  render() {
+  render: function render() {
     var Container = this.props.container;
 
-    return React.createElement(
+    return _react2.default.createElement(
       Container,
       null,
       this.content()
     );
   },
-
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
     if (!deepEqual(nextProps.options, this.props.options) || !deepEqual(nextProps.plugins, this.props.plugins)) {
       this.createMd(nextProps);
     }
   },
+  content: function content() {
+    var _this = this;
 
-  content() {
     if (this.props.source) {
-      return React.createElement('span', { dangerouslySetInnerHTML: { __html: this.renderMarkdown(this.props.source) } });
+      return _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: this.renderMarkdown(this.props.source) } });
     } else {
-      return React.Children.map(this.props.children, child => {
+      return _react2.default.Children.map(this.props.children, function (child) {
         if (typeof child === 'string') {
-          return React.createElement('span', { dangerouslySetInnerHTML: { __html: this.renderMarkdown(child) } });
+          return _react2.default.createElement('span', { dangerouslySetInnerHTML: { __html: _this.renderMarkdown(child) } });
         } else {
           return child;
         }
       });
     }
   },
-  createMd(props) {
-    this.md = new Markdown(props.options);
-    if (props.plugins) props.plugins.forEach(plugin => this.md.use(plugin));
-  },
+  createMd: function createMd(props) {
+    var _this2 = this;
 
-  renderMarkdown(source) {
+    this.md = new _remarkable2.default(props.options);
+    if (props.plugins) props.plugins.forEach(function (plugin) {
+      return _this2.md.use(plugin);
+    });
+  },
+  renderMarkdown: function renderMarkdown(source) {
     if (!this.md) {
       this.createMd(this.props);
     }
 
     return this.md.render(source);
   }
-
 });
 
-export default Remarkable;
+exports.default = Remarkable;
