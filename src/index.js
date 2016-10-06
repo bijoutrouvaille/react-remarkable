@@ -3,6 +3,18 @@
 import React from 'react';
 import Markdown from 'remarkable';
 
+var iterable = function(o) {
+  return typeof(o)=='object' && o!=null
+}
+var deepEqual = function(a,b) {
+  if (!iterable(a) || !iterable(b)) return a===b
+  for (var key in a) 
+    if (a.hasOwnProperty(key))
+      if (!deepEqual(a[k], b[k])) 
+        return false;
+  return true
+}
+
 var Remarkable = React.createClass({
 
   getDefaultProps() {
@@ -23,8 +35,11 @@ var Remarkable = React.createClass({
   },
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextProps.options !== this.props.options) {
-      this.md = new Markdown(nextProps.options);
+    if (
+        !deepEqual(nextProps.options, this.props.options) || 
+        !deepEqual(nextProps.plugins, this.props.plugins)
+    ) {
+      this.createMd(nextProps)
     }
   },
 
@@ -43,10 +58,14 @@ var Remarkable = React.createClass({
       });
     }
   },
+  createMd(props) {
+    this.md = new Markdown(props.options) 
+    if (props.plugins) props.plugins.forEach(plugin=>this.md.use(plugin))
+  }
 
   renderMarkdown(source) {
     if (!this.md) {
-      this.md = new Markdown(this.props.options);
+      this.createMd(this.props)
     }
 
     return this.md.render(source);
