@@ -22,7 +22,7 @@ var iterable = function iterable(o) {
 var deepEqual = function deepEqual(a, b) {
   if (!iterable(a) || !iterable(b)) return a === b;
   for (var key in a) {
-    if (a.hasOwnProperty(key)) if (!deepEqual(a[k], b[k])) return false;
+    if (a.hasOwnProperty(key)) if (!deepEqual(a[key], b[key])) return false;
   }return true;
 };
 

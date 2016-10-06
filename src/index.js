@@ -10,7 +10,7 @@ var deepEqual = function(a,b) {
   if (!iterable(a) || !iterable(b)) return a===b
   for (var key in a) 
     if (a.hasOwnProperty(key))
-      if (!deepEqual(a[k], b[k])) 
+      if (!deepEqual(a[key], b[key])) 
         return false;
   return true
 }
