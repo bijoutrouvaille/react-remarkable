@@ -61,7 +61,7 @@ var Remarkable = React.createClass({
   createMd(props) {
     this.md = new Markdown(props.options) 
     if (props.plugins) props.plugins.forEach(plugin=>this.md.use(plugin))
-  }
+  },
 
   renderMarkdown(source) {
     if (!this.md) {
