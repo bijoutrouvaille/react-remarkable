@@ -11,10 +11,11 @@
     "remarkable": "^1.4.1"
   },
   "devDependencies": {
-    "babel": "^5.1.13"
+    "babel-cli": "^6.16.0",
+    "babel-preset-react": "^6.16.0"
   },
   "scripts": {
-    "build": "babel src -d dist --modules common",
+    "build": "babel src -d dist",
     "prepublish": "npm run build"
   },
   "keywords": [
